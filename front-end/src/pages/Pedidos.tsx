@@ -1,5 +1,5 @@
 const Pedidos = () => {
-  return <div>Bellini</div>;
+  return <div className="text-white">Rota de Pedidos</div>;
 };
 
 export default Pedidos;
