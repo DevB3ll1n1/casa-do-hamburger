@@ -43,7 +43,7 @@ export const login = async (req: Request, res: Response) => {
       maxAge: 18000000,
     });
 
-    res.status(200).json({ userInfos });
+    res.status(200).json(userInfos);
   } catch (error) {
     res.status(500).json({ message: "Error no servidor." });
     return;

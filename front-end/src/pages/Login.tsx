@@ -5,7 +5,6 @@ import Button from "../components/Button";
 import { useNavigate } from "react-router";
 import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
-import { userInfo } from "os";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -29,7 +28,6 @@ const Login = () => {
         credentials: "include",
       });
 
-      console.log(userInfo.username);
       console.log(response);
 
       if (response.status === 404) {

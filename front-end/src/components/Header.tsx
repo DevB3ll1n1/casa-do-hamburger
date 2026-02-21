@@ -10,18 +10,22 @@ const Header = () => {
   console.log(location.pathname);
 
   const handleAuthUser = async () => {
-    const response = await fetch("http://localhost:3000/me", {
-      credentials: "include",
-    });
+    try {
+      const response = await fetch("http://localhost:3000/me", {
+        credentials: "include",
+      });
 
-    if (response.status !== 200) {
-      console.log("Deu ruim");
-      return;
+      if (response.status !== 200) {
+        console.log("Deu ruim");
+        return;
+      }
+
+      const data = await response.json();
+      console.log(data);
+      setUser(data);
+    } catch (error) {
+      console.log(error);
     }
-
-    const data = await response.json();
-    console.log(data);
-    setUser(data);
   };
 
   useEffect(() => {
@@ -70,9 +74,9 @@ const Header = () => {
                 1
               </p>
             </div>
-            {/* ACREDITO QUE ERRO POSSA ESTAR POR AQUI - O PROPRIEDADE DE USER ESTÁ COMO NULL, ENTÃO NÃO CONSEGUE ACESSAR O NAME DELE, POR ISSO FICA APENAS A LETRA A NA TELA - VER SE CONSEGUE CORRIGIR ISSO */}
+
             <div className=" flex  gap-2 items-center ">
-              <p> A{user?.name}</p>
+              <p> {user?.name}</p>
               <LogOut size={18} className="cursor-pointer" />
             </div>
           </div>
