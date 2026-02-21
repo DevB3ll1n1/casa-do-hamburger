@@ -2,7 +2,6 @@ import express, { type Request, type Response } from "express";
 import { prisma } from "../db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { userInfo } from "node:os";
 
 export const login = async (req: Request, res: Response) => {
   try {
@@ -86,26 +85,18 @@ export const register = async (req: Request, res: Response) => {
 export const auth = async (req: Request, res: Response) => {
   try {
     const token = req.cookies.user;
-    const secret = process.env.JWT_SECRET;
 
-    if (process.env.JWT_SECRET) {
+    if (!process.env.JWT_SECRET) {
       return;
     }
 
-    console.log("realizado");
-    if (!secret) {
-      res.status(500).json({ message: "Erro no servidor." });
-      return;
-    }
-
-    const decoded = jwt.verify(token, secret);
-
-    if (!decoded) {
-      res.status(401).json({ message: "Não autorizado." });
-      return;
-    }
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     res.status(200).json(decoded);
+    if (!decoded) {
+      res.status(401).json({ message: "Usuário não autorizado." });
+      return;
+    }
   } catch (error) {
     res.status(500).json({ message: "Erro no servidor." });
     return;
