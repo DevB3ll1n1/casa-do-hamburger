@@ -31,6 +31,7 @@ export const login = async (req: Request, res: Response) => {
       name: user.name,
       email: user.email,
       cep: user.cep,
+      admin: user.admin,
     };
 
     if (!process.env.JWT_SECRET) {
@@ -84,21 +85,22 @@ export const register = async (req: Request, res: Response) => {
 
 export const auth = async (req: Request, res: Response) => {
   try {
-    const token = req.cookies.user;
-
-    if (!process.env.JWT_SECRET) {
-      return;
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    res.status(200).json(decoded);
-    if (!decoded) {
-      res.status(401).json({ message: "Usuário não autorizado." });
-      return;
-    }
+    const { user } = req;
+    console.log(user);
+    res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: "Erro no servidor." });
     return;
   }
+};
+
+export const logout = async (req: Request, res: Response) => {
+  const { user } = req.cookies;
+
+  if (user) {
+    res.clearCookie("user");
+    res.status(200).json({ message: "usuário deslogado." });
+    return;
+  }
+  console.log(user);
 };
