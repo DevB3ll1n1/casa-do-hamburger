@@ -7,9 +7,6 @@ console.log(process.env.DATABASE_URL);
 const adapter = new PrismaPg({ connectionString });
 const prisma = new PrismaClient({ adapter });
 
-//Forma antiga de usar o PrismaClient
-//const prisma = new PrismaClient();
-
 export { prisma };
 
 export async function connection() {
