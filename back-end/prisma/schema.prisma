@@ -13,6 +13,17 @@ model User {
   email String @unique
   password String
   cep String
+  admin Boolean @default(false)
+}
+
+model Product {
+  id String @id @default(uuid())
+  name String
+  description String
+  price Float
+  category String 
+  imageUrl String
+  createAt DateTime @default(now())
 }
 
 

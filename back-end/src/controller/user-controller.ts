@@ -2,7 +2,6 @@ import express, { type Request, type Response } from "express";
 import { prisma } from "../db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { userInfo } from "node:os";
 
 export const login = async (req: Request, res: Response) => {
   try {
@@ -32,6 +31,7 @@ export const login = async (req: Request, res: Response) => {
       name: user.name,
       email: user.email,
       cep: user.cep,
+      admin: user.admin,
     };
 
     if (!process.env.JWT_SECRET) {
@@ -85,29 +85,22 @@ export const register = async (req: Request, res: Response) => {
 
 export const auth = async (req: Request, res: Response) => {
   try {
-    const token = req.cookies.user;
-    const secret = process.env.JWT_SECRET;
-
-    if (process.env.JWT_SECRET) {
-      return;
-    }
-
-    console.log("realizado");
-    if (!secret) {
-      res.status(500).json({ message: "Erro no servidor." });
-      return;
-    }
-
-    const decoded = jwt.verify(token, secret);
-
-    if (!decoded) {
-      res.status(401).json({ message: "Não autorizado." });
-      return;
-    }
-
-    res.status(200).json(decoded);
+    const { user } = req;
+    console.log(user);
+    res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: "Erro no servidor." });
     return;
   }
+};
+
+export const logout = async (req: Request, res: Response) => {
+  const { user } = req.cookies;
+
+  if (user) {
+    res.clearCookie("user");
+    res.status(200).json({ message: "usuário deslogado." });
+    return;
+  }
+  console.log(user);
 };
