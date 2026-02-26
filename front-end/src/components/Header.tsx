@@ -7,7 +7,7 @@ const Header = () => {
   const { user, setUser } = useContext(UserContext);
   const location = useLocation();
 
-  console.log(location.pathname);
+  // console.log(location.pathname);
 
   const handleAuthUser = async () => {
     try {
@@ -66,10 +66,14 @@ const Header = () => {
           <img src="./logo.png" alt="" />
         </Link>
 
+        <Link to="/login" className="text-white">
+          Login
+        </Link>
+
         {user ? (
           <div className="text-white flex gap-8 items-center flex  ">
             {user.admin && (
-              <div className="text-[#F2DAAC] flex gap-2 items-center ">
+              <div className=" hidden md:flex text-[#F2DAAC] flex gap-2 items-center ">
                 <Link to="/">
                   <div className={getNaveItemClass("/")}>
                     <Box size={18} className="cursor-pointer" />
